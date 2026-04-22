@@ -55,7 +55,7 @@ def generate_raw_data() -> pd.DataFrame:
     df.loc[dirty_idx[len(dirty_idx)//2:], "hours_social"] = 99.0  # outliers
 
     return df
-    
+
 # ── 2. Data Cleaning ───────────────────────────────────────────────────────────
 def clean_data(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
     """
@@ -87,3 +87,82 @@ def clean_data(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
         (report["dropped_nulls"] / report["raw_rows"]) * 100, 1
     )
     return df, report
+
+# ── 3. EDA helpers ─────────────────────────────────────────────────────────────
+def summary_stats(df: pd.DataFrame) -> dict:
+    """Descriptive statistics for the report."""
+    hour_cols = [c for c in df.columns if c.startswith("hours_")]
+    stats = df[hour_cols].describe().round(2).to_dict()
+    return stats
+
+
+def category_totals(df: pd.DataFrame) -> list[dict]:
+    """Per-category aggregate metrics."""
+    hour_cols = [c for c in df.columns if c.startswith("hours_")]
+    totals = []
+    total_users = len(df)
+    for col, cat in zip(hour_cols, CATEGORIES):
+        engaged = (df[col] > 0.5).sum()
+        totals.append({
+            "category":    cat,
+            "avg_hours":   round(float(df[col].mean()), 2),
+            "median_hours":round(float(df[col].median()), 2),
+            "users":       int(engaged),
+            "engagement_rate": round(engaged / total_users * 100, 1),
+        })
+    return sorted(totals, key=lambda x: x["avg_hours"], reverse=True)
+
+
+def engagement_by_group(df: pd.DataFrame, group_col: str) -> dict:
+    """
+    Mean engagement hours per category, broken down by a demographic column.
+    Used for the grouped bar chart.
+    """
+    hour_cols = [c for c in df.columns if c.startswith("hours_")]
+    grouped = (
+        df.groupby(group_col)[hour_cols]
+        .mean()
+        .round(2)
+    )
+    # Normalise to percentage share within each group
+    row_sums = grouped.sum(axis=1)
+    pct = grouped.div(row_sums, axis=0).mul(100).round(1)
+    return {
+        "groups":    list(pct.index),
+        "categories": CATEGORIES,
+        "values":    pct.values.tolist(),
+    }
+
+
+def overall_distribution(df: pd.DataFrame) -> dict:
+    """Overall share of total usage per category (for donut chart)."""
+    hour_cols = [c for c in df.columns if c.startswith("hours_")]
+    totals = df[hour_cols].sum()
+    pct = (totals / totals.sum() * 100).round(1)
+    return {
+        "labels": CATEGORIES,
+        "values": pct.values.tolist(),
+    }
+
+
+def monthly_trend() -> dict:
+    """
+    Simulated 6-month trend data (as if sampled each month).
+    Returns hours/day for top 3 categories.
+    """
+    trend = {
+        "Social":        [1.8, 2.0, 2.1, 2.0, 2.2, 2.1],
+        "Entertainment": [1.2, 1.5, 1.4, 1.3, 1.4, 1.4],
+        "Health":        [0.4, 0.5, 0.5, 0.6, 0.6, 0.6],
+    }
+    return {"months": MONTHS, "series": trend}
+
+
+def top_group_per_category(df: pd.DataFrame) -> dict:
+    """Which age group has highest average engagement per category."""
+    hour_cols = [c for c in df.columns if c.startswith("hours_")]
+    result = {}
+    for col, cat in zip(hour_cols, CATEGORIES):
+        top = df.groupby("age_group")[col].mean().idxmax()
+        result[cat] = top
+    return result
