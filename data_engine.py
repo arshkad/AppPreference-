@@ -55,3 +55,35 @@ def generate_raw_data() -> pd.DataFrame:
     df.loc[dirty_idx[len(dirty_idx)//2:], "hours_social"] = 99.0  # outliers
 
     return df
+    
+# ── 2. Data Cleaning ───────────────────────────────────────────────────────────
+def clean_data(df: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
+    """
+    End-to-end cleaning pipeline.
+    Returns cleaned dataframe + a cleaning report dict.
+    """
+    report = {"raw_rows": len(df)}
+
+    # Drop rows with any NaN in hour columns
+    hour_cols = [c for c in df.columns if c.startswith("hours_")]
+    before = len(df)
+    df = df.dropna(subset=hour_cols).copy()
+    report["dropped_nulls"] = before - len(df)
+
+    # Cap outliers at 99th percentile per column
+    capped = 0
+    for col in hour_cols:
+        cap = df[col].quantile(0.99)
+        mask = df[col] > cap
+        capped += mask.sum()
+        df.loc[mask, col] = cap
+    report["capped_outliers"] = int(capped)
+
+    # Ensure non-negative
+    df[hour_cols] = df[hour_cols].clip(lower=0)
+
+    report["clean_rows"] = len(df)
+    report["missing_pct_before"] = round(
+        (report["dropped_nulls"] / report["raw_rows"]) * 100, 1
+    )
+    return df, report
