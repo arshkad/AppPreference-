@@ -60,3 +60,39 @@
           </div>
         </div>
       </section>
+    <!-- Trend chart -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-title">6-month engagement trend</span>
+        <span class="badge">Monthly avg hrs/day</span>
+      </div>
+      <div class="chart-card">
+        <div class="legend-row" id="lineLegend"></div>
+        <div class="chart-wrap" style="height:180px">
+          <canvas id="lineChart" role="img" aria-label="Line chart of six-month app usage trend">Loading…</canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data table -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-title">Category breakdown</span>
+        <span class="badge" id="tableCount">n = —</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Engaged users</th>
+              <th>Engagement rate</th>
+              <th>Avg hrs/day</th>
+              <th>Median hrs/day</th>
+              <th>Top age group</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
