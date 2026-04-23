@@ -10,3 +10,53 @@
 <body>
 
   <div class="wrap">
+    <!-- Hero -->
+    <header class="hero">
+        <div class="hero-left">
+          <h1 class="hero-title">App Preference Patterns<br><em>Across Demographic Groups</em></h1>
+          <p class="hero-sub">
+            Research Analysis — Data Science &amp; ML Methodologies &nbsp;
+            <span class="pill">Python</span>
+            <span class="pill">Pandas</span>
+            <span class="pill">NumPy</span>
+            <span class="pill">Matplotlib</span>
+          </p>
+        </div>
+        <button class="refresh-btn" onclick="refreshData()">↺ Re-run pipeline</button>
+      </header>
+  
+      <!-- Stat cards -->
+      <section class="stats-row" id="statsRow">
+        <div class="stat-card"><div class="stat-label">Data Points</div><div class="stat-value" id="s-points">—</div><div class="stat-note">after cleaning</div></div>
+        <div class="stat-card"><div class="stat-label">Nulls Dropped</div><div class="stat-value" id="s-nulls">—</div><div class="stat-note" id="s-missing">—</div></div>
+        <div class="stat-card"><div class="stat-label">Outliers Capped</div><div class="stat-value" id="s-outliers">—</div><div class="stat-note">@ p99</div></div>
+        <div class="stat-card"><div class="stat-label">Categories</div><div class="stat-value" id="s-cats">—</div><div class="stat-note">app segments</div></div>
+      </section>
+  
+      <!-- Filter pills -->
+      <div class="filter-row">
+        <span class="filter-label">Demographic filter:</span>
+        <button class="pill-btn active" data-filter="age"    onclick="setFilter('age',this)">Age group</button>
+        <button class="pill-btn"        data-filter="gender" onclick="setFilter('gender',this)">Gender</button>
+        <button class="pill-btn"        data-filter="region" onclick="setFilter('region',this)">Region</button>
+      </div>
+  
+      <!-- Main charts row -->
+      <section class="section two-col">
+        <div class="chart-card">
+          <div class="chart-title">App category engagement</div>
+          <div class="chart-desc" id="barDesc">Usage share by age group (%)</div>
+          <div class="legend-row" id="barLegend"></div>
+          <div class="chart-wrap" style="height:240px">
+            <canvas id="barChart" role="img" aria-label="Grouped bar chart of app category engagement by demographic group">Loading…</canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Overall usage distribution</div>
+          <div class="chart-desc">Share of total daily usage per category</div>
+          <div class="legend-row" id="pieLegend"></div>
+          <div class="chart-wrap" style="height:240px">
+            <canvas id="pieChart" role="img" aria-label="Donut chart of overall app usage distribution">Loading…</canvas>
+          </div>
+        </div>
+      </section>
