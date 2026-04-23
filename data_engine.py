@@ -166,3 +166,43 @@ def top_group_per_category(df: pd.DataFrame) -> dict:
         top = df.groupby("age_group")[col].mean().idxmax()
         result[cat] = top
     return result
+# ── 4. Master pipeline ─────────────────────────────────────────────────────────
+def run_pipeline() -> dict:
+    """Run the full research pipeline and return all data as a dict."""
+    raw    = generate_raw_data()
+    df, cleaning_report = clean_data(raw)
+
+    top_groups = top_group_per_category(df)
+    cats       = category_totals(df)
+    for c in cats:
+        c["top_group"] = top_groups.get(c["category"], "—")
+
+    return {
+        "meta": {
+            "total_points":  cleaning_report["clean_rows"],
+            "raw_points":    cleaning_report["raw_rows"],
+            "dropped_nulls": cleaning_report["dropped_nulls"],
+            "capped_outliers": cleaning_report["capped_outliers"],
+            "missing_pct":   cleaning_report["missing_pct_before"],
+            "categories":    len(CATEGORIES),
+            "age_groups":    len(AGE_GROUPS),
+        },
+        "category_totals":    cats,
+        "by_age":             engagement_by_group(df, "age_group"),
+        "by_gender":          engagement_by_group(df, "gender"),
+        "by_region":          engagement_by_group(df, "region"),
+        "overall_dist":       overall_distribution(df),
+        "monthly_trend":      monthly_trend(),
+        "summary_stats":      summary_stats(df),
+        "cleaning_report":    cleaning_report,
+    }
+
+
+if __name__ == "__main__":
+    data = run_pipeline()
+    out = Path("data/pipeline_output.json")
+    out.parent.mkdir(exist_ok=True)
+    out.write_text(json.dumps(data, indent=2))
+    print(f"Pipeline complete. {data['meta']['total_points']:,} clean records.")
+    print(f"Cleaning: dropped {data['meta']['dropped_nulls']} nulls, "
+          f"capped {data['meta']['capped_outliers']} outliers.")
