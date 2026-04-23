@@ -96,3 +96,54 @@
         </table>
       </div>
     </section>
+    <!-- Insights -->
+    <section class="section">
+        <div class="section-header">
+          <span class="section-title">Key insights</span>
+        </div>
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-icon">◈</div>
+            <p><strong>Social apps dominate</strong> the 18–24 cohort with ~42% share — nearly double the cross-demographic average.</p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon">◈</div>
+            <p><strong>Productivity tools</strong> see the steepest uptake in 35–44 users, with a 31% engagement rate vs 12% in younger cohorts.</p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-icon">◈</div>
+            <p><strong>Health &amp; wellness</strong> shows consistent cross-demographic growth — up ~18% over the 6-month observation window.</p>
+          </div>
+        </div>
+      </section>
+  
+      <!-- Cleaning report -->
+      <section class="section">
+        <div class="section-header">
+          <span class="section-title">Pipeline &amp; cleaning report</span>
+          <span class="badge">Python · Pandas</span>
+        </div>
+        <div class="pipeline-steps">
+          <div class="step"><div class="step-num">1</div><div><strong>Raw data generation</strong><br><span class="muted" id="p-raw">—</span></div></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">2</div><div><strong>Null removal</strong><br><span class="muted" id="p-nulls">—</span></div></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">3</div><div><strong>Outlier capping</strong><br><span class="muted" id="p-cap">—</span></div></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">4</div><div><strong>EDA &amp; analysis</strong><br><span class="muted">Groupby · describe()</span></div></div>
+          <div class="step-arrow">→</div>
+          <div class="step"><div class="step-num">5</div><div><strong>Visualisation</strong><br><span class="muted">Chart.js via Flask API</span></div></div>
+        </div>
+      </section>
+  
+      <footer class="footer">
+        <span>Research workflow: data cleaning → EDA → visualisation → synthesis</span>
+        <span id="footerCount">—</span>
+      </footer>
+  
+    </div>
+  
+    <script src="/static/js/dashboard.js"></script>
+  </body>
+  </html>
+  
