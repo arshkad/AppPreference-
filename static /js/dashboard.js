@@ -174,3 +174,31 @@ function renderPie() {
         </tr>`;
     }).join('');
   }
+
+// ── Pipeline report ────────────────────────────────────────────────────────────
+function renderPipeline() {
+    const m = appData.meta;
+    document.getElementById('p-raw').textContent   = m.raw_points.toLocaleString() + ' rows generated';
+    document.getElementById('p-nulls').textContent = m.dropped_nulls + ' rows removed';
+    document.getElementById('p-cap').textContent   = m.capped_outliers + ' values capped';
+  }
+  
+  // ── Filter toggle ──────────────────────────────────────────────────────────────
+  function setFilter(f, btn) {
+    currentFilter = f;
+    document.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderBar(f);
+  }
+  
+  // ── Refresh ────────────────────────────────────────────────────────────────────
+  async function refreshData() {
+    await fetch('/api/refresh');
+    barChart && barChart.destroy();
+    pieChart && pieChart.destroy();
+    lineChart && lineChart.destroy();
+    await loadData();
+  }
+  
+  // ── Init ───────────────────────────────────────────────────────────────────────
+  loadData();
