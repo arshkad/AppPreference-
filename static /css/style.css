@@ -1,0 +1,116 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #ffffff;
+  --bg2:       #f5f4f0;
+  --bg3:       #eeecea;
+  --text:      #1a1a18;
+  --text2:     #6b6a66;
+  --border:    rgba(0,0,0,0.1);
+  --border2:   rgba(0,0,0,0.18);
+  --radius:    10px;
+  --radius-lg: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:     #1a1a18;
+    --bg2:    #242422;
+    --bg3:    #2e2e2b;
+    --text:   #f0efea;
+    --text2:  #888880;
+    --border: rgba(255,255,255,0.1);
+    --border2:rgba(255,255,255,0.18);
+  }
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+
+/* Hero */
+.hero {
+  padding: 2.5rem 0 1.5rem;
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.hero-title em { font-style: italic; color: var(--text2); }
+.hero-sub { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 7px;
+  color: var(--text2);
+}
+.refresh-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  background: var(--bg2);
+  border: 0.5px solid var(--border2);
+  border-radius: 20px;
+  padding: 6px 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.refresh-btn:hover { background: var(--bg3); }
+
+/* Stat cards */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+.stat-card {
+  background: var(--bg2);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.stat-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  font-weight: 500;
+  color: var(--text2);
+  margin-bottom: 6px;
+}
+.stat-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text);
+}
+.stat-note {
+  font-size: 11px;
+  color: var(--text2);
+  margin-top: 4px;
+  font-family: 'DM Mono', monospace;
+}
